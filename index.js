@@ -42,6 +42,20 @@ const BUSD = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
 const CAKE = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
 const BSW = '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1'
 
+
+// Steps for multi exchange trade
+/*
+    1. Get the crossover pairs of tokens that are trading on 2 different DEX's
+    2. Check the exchange rate of the pair on each of the exchanges
+    3. Is the % difference in exchange rates greater than the fees it will cost to trade?
+        - Fees would include: 
+            - Liquidity pool provider fee ((0.20% - 0.25%) * 2)
+            - Transaction Fee.
+    4. If the trade is worth taking, then call the executeMultiExchange function and simulate the trade and whether the finishing balance will be greater than the starting balance.
+    5. if this is true, then fire off the real trade by calling the smart contract that has been deployed to execute trades.
+    6. Alternatively, number 4. can be skipped and number 5. can just be executed as the contract will revert annyway if the trade is not profitable.
+*/
+
 async function executeTriangleTrade() {
     try {
         // 1. We get the amount of bnb we are spending
