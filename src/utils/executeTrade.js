@@ -3,7 +3,7 @@ async function executeTrade(router, amountIn, pairsArray) {
         const amountsOut = await router.methods.getAmountsOut(amountIn, pairsArray).call()
         return amountsOut[1]
     } catch (err) {
-        console.error(`Error in getAmountsOut - ${err}`)
+        console.error(`Error from getAmountsOut - ${err}`)
     }
 }
 

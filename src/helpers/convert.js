@@ -1,4 +1,4 @@
-const { Web3Client } =  require('./client')
+const { Web3Client } = require('../utils/client')
 
 function convertToWei(amount) {
     return Web3Client.utils.toWei(amount, 'ether')

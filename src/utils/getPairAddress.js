@@ -11,7 +11,7 @@ async function getPairAddress(
         const address = await FactoryContract.methods.getPair(token1, token2).call()
         return address
     } catch (err) {
-        console.err(`Error when calling getPairAddress with error - ${err}`)
+        console.error(`Error from getPairAddress - ${err}`)
     }
 }
 
