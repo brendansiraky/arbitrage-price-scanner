@@ -10,7 +10,7 @@ npm install
 
 ## Usage
 ```bash
-node index.js
+npm run start
 ```
 
 ## Notes
