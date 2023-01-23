@@ -13,7 +13,9 @@
     "@uniswap/sdk": "^3.0.3",
     "big.js": "^6.2.1",
     "dotenv": "^16.0.3",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.8",
+    "underscore": "^1.13.6",
     "web3": "^1.8.1"
   }
 }

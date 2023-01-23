@@ -8,8 +8,8 @@ function getInputAndOutputFromUrl(url) {
     const outputCurrency = url.slice(indexOfOutputCurrency + outputSubString.length)
 
     return [
-        inputCurrency.toLowerCase(),
-        outputCurrency.toLowerCase()
+        inputCurrency,
+        outputCurrency
     ]
 }
 

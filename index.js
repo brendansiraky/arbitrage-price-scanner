@@ -2,6 +2,7 @@ const { Web3Client } =  require('./src/utils/client.js')
 const { executeTrade } = require('./src/utils/executeTrade.js')
 const { getRandomEntryFromArray } = require('./src/helpers/getRandomEntryFromArray')
 const { executeMultiExchangeSwap } = require('./src/utils/executeMultiExchangeSwap')
+const { executeSimpleTrade } = require('./src/utils/executeSimpleTrade')
 
 // ABI's
 const BiswapRouterAbi = require('./abi/BiswapRouter.json')
@@ -38,7 +39,11 @@ const PancakeSwapRouter = new Web3Client.eth.Contract(
     6. Alternatively, number 4. can be skipped and number 5. can just be executed as the contract will revert annyway if the trade is not profitable.
 */
 
-const baseTokenInfo = { id: 'wbnb', ticker: 'WBNB', address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' }
+const baseTokenInfo = { 
+    // id: 'wbnb',
+    ticker: 'WBNB', 
+    // address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+}
 
 // Closure function that wraps over the PANCAKESWAP router 
 async function pancakeTrade(amount, pairsArray) {
@@ -51,25 +56,63 @@ async function biswapTrade(amount, pairsArray) {
 }
 
 async function executeScan() {
-    const pairs = await getPairs('pancakeswap_new', baseTokenInfo)
-    
-    const randomPair = getRandomEntryFromArray(pairs)
-        executeMultiExchangeSwap(
-            pancakeTrade,
-            biswapTrade,
-            '1',
-            randomPair
-        )
+    // Get the pairs that crossover between these 2 exchanges
+    const pairs = await getPairs(['pancakeswap_new', 'biswap'], baseTokenInfo)
 
-    setInterval(() => {
-        const randomPair = getRandomEntryFromArray(pairs)
-        executeMultiExchangeSwap(
+    
+    setInterval(async () => {
+        const { tradingPair, basePairName } = getRandomEntryFromArray(pairs)
+        const tradingPairReversed = tradingPair.reverse()
+        
+        // Grab the exchange rate from both of the exchanges.
+        const amountFromPancake = await executeSimpleTrade(
             pancakeTrade,
+            '1',
+            {
+                tradingPair: tradingPairReversed, // WBNB/TW
+                basePairName,
+            }
+        )
+    
+        const amountFromBiswap = await executeSimpleTrade(
             biswapTrade,
             '1',
-            randomPair
+            {
+                tradingPair: tradingPairReversed, // WBNB/TW
+                basePairName,
+            }
         )
+    
+        console.log({ amountFromPancake, amountFromBiswap })
     }, 10000)
+
+
+    //   const { tradingPair, basePairName } = tokenSwapArray
+
+    // executeMultiExchangeSwap(
+    //     pancakeTrade,
+    //     biswapTrade,
+    //     '1',
+    //     randomPair
+    // )
+
+    // setInterval(() => {
+    //     const randomPair = getRandomEntryFromArray(pairs)
+    //     executeMultiExchangeSwap(
+    //         pancakeTrade,
+    //         biswapTrade,
+    //         '1',
+    //         randomPair
+    //     )
+    // }, 10000)
+}
+
+async function getCheaperExchangeRouter(
+    firstTradeFunction,
+    secondTradeFunction,
+    pairs
+) {
+
 }
 
 executeScan()
