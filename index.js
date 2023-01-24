@@ -10,6 +10,8 @@ const { PancakeSwapRouter, UniswapRouter } = require('./src/contracts/routers')
 
 const { getPairs } = require('./src/utils/getPairs.js');
 const { convertToWei, convertFromWei } = require('./src/helpers/convert.js')
+const { simulateTriangleSwap } = require('./src/utils/simulateTriangleSwap.js')
+const { getTokenDecimals } = require('./src/utils/getTokenDecimals.js')
 
 // // Closure function that wraps over the UNISWAP router 
 // async function uniswapTrade(amount, pairsArray) {
@@ -78,10 +80,29 @@ async function executeSimulateSimpleSwap() {
             '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
             '0x4d224452801aced8b2f0aebe155379bb5d594381' // APE
         ],
-        true // Indicates whether we want the output to be formatted or returned as wei.
     )
 
     console.log(output)
 }
 
-executeSimulateSimpleSwap()
+async function executeSimulateTriagleSwap() {
+    const pairs = [
+        '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
+        '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
+        '0xdac17f958d2ee523a2206206994597c13d831ec7', // Tether
+    ]
+
+    const decimals = await getTokenDecimals(pairs[0])
+
+    const output = await simulateTriangleSwap(
+        UniswapRouter,
+        (1000 * 10**decimals).toString(), // 1 WETH (ETH)
+        pairs,
+        decimals
+    )
+
+    console.log(output)
+}
+
+executeSimulateTriagleSwap()
+// executeSimulateSimpleSwap()
