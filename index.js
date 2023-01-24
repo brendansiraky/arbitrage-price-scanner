@@ -1,110 +1,62 @@
 const { Web3Client } =  require('./src/utils/client.js')
-const { executeTrade } = require('./src/utils/executeTrade.js')
+const BigNumber = require('big.js')
 const { getRandomEntryFromArray } = require('./src/helpers/getRandomEntryFromArray')
 const { executeMultiExchangeSwap } = require('./src/utils/executeMultiExchangeSwap')
-const { executeSimpleTrade } = require('./src/utils/executeSimpleTrade')
+const { simulateSimpleSwap } = require('./src/utils/simulateSimpleSwap')
 
-// ABI's
-const BiswapRouterAbi = require('./abi/BiswapRouter.json')
-const PancakeSwapRouterV2Abi = require('./abi/PancakeSwapRouterV2.json');
+const { getV2TokenPairContract } = require('./src/utils/getV2TokenPairContract')
+
+const { PancakeSwapRouter, UniswapRouter } = require('./src/contracts/routers')
+
 const { getPairs } = require('./src/utils/getPairs.js');
+const { convertToWei, convertFromWei } = require('./src/helpers/convert.js')
 
-// Biswap
-const BISWAP_ROUTER_CONTRACT_ADDRESS = '0x3a6d8cA21D1CF76F653A67577FA0D27453350dD8'
-const BiswapRouter = new Web3Client.eth.Contract(
-    BiswapRouterAbi.abi, 
-    BISWAP_ROUTER_CONTRACT_ADDRESS
-)
+// // Closure function that wraps over the UNISWAP router 
+// async function uniswapTrade(amount, pairsArray) {
+//     return executeTrade(UniswapRouter, amount, pairsArray)
+// }
 
-// Pancakeswap
-const PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2 = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
-const PancakeSwapRouter = new Web3Client.eth.Contract(
-    PancakeSwapRouterV2Abi.abi, 
-    PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2
-)
+// // Closure function that wraps over the PANCAKESWAP router 
+// async function pancakeTrade(amount, pairsArray) {
+//     return executeTrade(PancakeSwapRouter, amount, pairsArray)
+// }
 
-// Starting token will relate to what we hold in our wallet.
-// This is because it is needed in order to trigger the first trade (e.g BNB/CAKE).
+// // Closure function that wraps over the BISWAP router
+// async function biswapTrade(amount, pairsArray) {
+//     return executeTrade(BiswapRouter, amount, pairsArray)
+// }
 
-// Steps for multi exchange trade
-/*
-    1. Get the crossover pairs of tokens that are trading on 2 different DEX's
-    2. Check the exchange rate of the pair on each of the exchanges
-    3. Is the % difference in exchange rates greater than the fees it will cost to trade?
-        - Fees would include: 
-            - Liquidity pool provider fee ((0.20% - 0.25%) * 2)
-            - Transaction Fee.
-    4. If the trade is worth taking, then call the executeMultiExchange function and simulate the trade and whether the finishing balance will be greater than the starting balance.
-    5. if this is true, then fire off the real trade by calling the smart contract that has been deployed to execute trades.
-    6. Alternatively, number 4. can be skipped and number 5. can just be executed as the contract will revert annyway if the trade is not profitable.
-*/
-
-const baseTokenInfo = { 
-    // id: 'wbnb',
-    ticker: 'WBNB', 
-    // address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
-}
-
-// Closure function that wraps over the PANCAKESWAP router 
-async function pancakeTrade(amount, pairsArray) {
-    return executeTrade(PancakeSwapRouter, amount, pairsArray)
-}
-
-// Closure function that wraps over the BISWAP router
-async function biswapTrade(amount, pairsArray) {
-    return executeTrade(BiswapRouter, amount, pairsArray)
-}
+// const amountInUSDC = '100' / 10**6 // $100
 
 async function executeScan() {
     // Get the pairs that crossover between these 2 exchanges
-    const pairs = await getPairs(['pancakeswap_new', 'biswap'], baseTokenInfo)
+    // const pairs = await getPairs(['pancakeswap_new'], baseTokenInfo)
 
-    
-    setInterval(async () => {
-        const { tradingPair, basePairName } = getRandomEntryFromArray(pairs)
-        const tradingPairReversed = tradingPair.reverse()
-        
-        // Grab the exchange rate from both of the exchanges.
-        const amountFromPancake = await executeSimpleTrade(
-            pancakeTrade,
-            '1',
-            {
-                tradingPair: tradingPairReversed, // WBNB/TW
-                basePairName,
-            }
-        )
-    
-        const amountFromBiswap = await executeSimpleTrade(
-            biswapTrade,
-            '1',
-            {
-                tradingPair: tradingPairReversed, // WBNB/TW
-                basePairName,
-            }
-        )
-    
-        console.log({ amountFromPancake, amountFromBiswap })
-    }, 10000)
+    // const randomPair = getRandomEntryFromArray(pairs)
 
-
-    //   const { tradingPair, basePairName } = tokenSwapArray
-
-    // executeMultiExchangeSwap(
+    // executeSimpleTrade(
     //     pancakeTrade,
-    //     biswapTrade,
     //     '1',
     //     randomPair
     // )
 
-    // setInterval(() => {
-    //     const randomPair = getRandomEntryFromArray(pairs)
-    //     executeMultiExchangeSwap(
-    //         pancakeTrade,
-    //         biswapTrade,
-    //         '1',
-    //         randomPair
-    //     )
-    // }, 10000)
+
+    try {
+        // const amountsOutFirst = await UniswapRouter.methods.getAmountsOut(amountInEth, [USDC, WETH]).call()
+        // const amountsOutSecond = await UniswapRouter.methods.getAmountsOut(amountsOutFirst[1], [WETH, USDC]).call()
+
+        // console.log(amountsOutSecond[1] / 10**6)
+
+        // const bigNumber = new BigNumber()
+        // console.log(amountsOut)
+
+        // const num = convertFromWei(amountsOut[1] / 10**6)
+        // const usdcOutput = new BigNumber(amountsOut[1]).div(10 ** 6)
+        // console.log(usdcOutput.toFixed(2))
+
+    } catch (err) {
+        console.error(`Error from getAmountsOut - ${err}`)
+    }
 }
 
 async function getCheaperExchangeRouter(
@@ -115,11 +67,21 @@ async function getCheaperExchangeRouter(
 
 }
 
-executeScan()
+// executeScan()
 
-/*
-    {
-        tradingPair: sortedTradingPair,
-        basePairName: `${ticker.coin_id}/${ticker.target_coin_id}`
-    }
-*/
+/******* EXAMPLES *******/
+async function executeSimulateSimpleSwap() {
+    const output = await simulateSimpleSwap(
+        UniswapRouter,
+        convertToWei('1'), // 1 WETH (ETH)
+        [
+            '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
+            '0x4d224452801aced8b2f0aebe155379bb5d594381' // APE
+        ],
+        true // Indicates whether we want the output to be formatted or returned as wei.
+    )
+
+    console.log(output)
+}
+
+executeSimulateSimpleSwap()

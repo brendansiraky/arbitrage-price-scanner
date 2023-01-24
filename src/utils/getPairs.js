@@ -19,13 +19,13 @@ async function getPairs(exchangeNames, baseTokenInfo) {
             const result = await response.json()
 
             exchangeTickers.push(result.tickers)
-        }
-
-
+        }      
+        
         const tradingPairs = intersectionBy(...exchangeTickers, 'coin_id')
 
+
         // Keep only those tickers which target is our baseTokenInfo.ticker.
-        const filteredAndMappedTradingPairs = tradingPairs.filter(ticker => 
+        const filteredAndMappedTradingPairs = exchangeTickers[0].filter(ticker => 
             ticker.target_coin_id.toLowerCase() === baseTokenInfo.ticker.toLowerCase()
         ).map(ticker => {
 
