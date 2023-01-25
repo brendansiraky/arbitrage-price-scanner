@@ -61,14 +61,6 @@ async function executeScan() {
     }
 }
 
-async function getCheaperExchangeRouter(
-    firstTradeFunction,
-    secondTradeFunction,
-    pairs
-) {
-
-}
-
 // executeScan()
 
 /******* EXAMPLES *******/

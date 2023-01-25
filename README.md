@@ -21,7 +21,7 @@ npm run start
 
 ### To Add:
 - Add functionality to actually execute a deployed smart contract when an opportunity is found to fit the criteria of being profitable.
-- Instead of blindly scanning, compare the prices of a pair on each exchange first before testing the swap. This will significantly reduce the amount of dud trades we are checking.
+- Instead of blindly scanning, compare the prices of a pair on each exchange for the cheapest first before testing the swap. This will significantly reduce the amount of dud trades we are checking.
 - Add a triangle arbitrage function (e.g BNB/CAKE -> CAKE/BUSD -> BUSD/BNB).
 - Add in additional exchanges in.
 - Add support for other chains.
