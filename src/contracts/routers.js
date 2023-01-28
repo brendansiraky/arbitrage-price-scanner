@@ -5,9 +5,10 @@ const PancakeSwapRouterV2Abi = require('../../abi/PancakeSwapRouterV2.json')
 const UniswapRouterV2Abi = require('../../abi/UniswapRouter.json')
 
 // Pancakeswap
+const PANCAKESWAP_FACTORY_CONTRACT_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
 const PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2 = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
 const PancakeSwapRouter = new Web3Client.eth.Contract(
-    PancakeSwapRouterV2Abi.abi, 
+    PancakeSwapRouterV2Abi.abi,
     PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2
 )
 
@@ -19,6 +20,7 @@ const BiswapRouter = new Web3Client.eth.Contract(
 )
 
 // Uniswap
+const UNISWAP_FACTORY_CONTRACT_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 const UNISWAP_ROUTER_CONTRACT_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
 const UniswapRouter = new Web3Client.eth.Contract(
     UniswapRouterV2Abi.abi, 
@@ -30,3 +32,14 @@ module.exports = {
     PancakeSwapRouter,
     BiswapRouter,
 }
+
+
+/*
+    GOERLI TESTNET
+    WETH = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
+    UNI = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
+    USDC = '0x2f3A40A3db8a7e3D09B0adfEfbCe4f6F81927557'
+
+    WETH/USDC POOL = '0x07865c6e87b9f70255377e024ace6630c1eaa37f'
+    WETH/UNI POOL = '0x28cee28a7C4b4022AC92685C07d2f33Ab1A0e122'
+*/
