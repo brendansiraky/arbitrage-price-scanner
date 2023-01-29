@@ -22,7 +22,7 @@ async function getProfitablePath(startingBalance) {
                     cycleEdges: cycle.edges.map(n => n.pairAddress),
                     tokenPath: cycle.nodes.map(n => tokenLookup[n.address].address)
                 }
-            }).sort((a, b) => a.finalLiquidity - b.finalLiquidity).filter(path => path.finalLiquidity > startingBalance)
+            }).sort((a, b) => a.finalLiquidity - b.finalLiquidity).filter(path => path.finalLiquidity >= startingBalance * 1.01) // 1%
 
             return mapped[mapped.length - 1]
         }
