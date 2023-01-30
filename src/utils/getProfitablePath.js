@@ -24,9 +24,9 @@ async function getProfitablePath(startingBalance) {
                 }
             }).sort((a, b) => a.finalLiquidity - b.finalLiquidity)
 
-            const filteredPath = mappedPath.filter(path => path.finalLiquidity > (startingBalance * 1.004)) // 0.4%
+            const filteredPath = mappedPath.filter(path => path.finalLiquidity > startingBalance) // 0.4%
 
-            return filteredPath[mappedPath.length - 1]
+            return filteredPath[filteredPath.length - 1]
         }
 }
 

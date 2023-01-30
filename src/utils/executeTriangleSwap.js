@@ -2,7 +2,6 @@ const { PRIVATE_KEY } = require('../../config')
 const { TriangleSwapContract, TRIANGLESWAP_CONTRACT_ADDRESS } = require('../../contracts/TriangleSwapContract')
 const { Web3Client } = require('./client')
 const { getAddress } = require('../utils/getAddress')
-const { parseAddressCase } = require('../helpers/parseAddressCase')
 
 async function executeTriangleSwap(amountIn, pathAddresses) {
     try {
@@ -32,7 +31,7 @@ async function executeTriangleSwap(amountIn, pathAddresses) {
 		const transaction = {
 			nonce,
 			gas: estimatedGas.toString(),
-			// gas: '1217280',
+			// gas: '739190',
 			to: TRIANGLESWAP_CONTRACT_ADDRESS,
 			data: encodedFunction,
 		}
