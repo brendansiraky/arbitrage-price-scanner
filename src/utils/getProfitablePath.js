@@ -15,16 +15,18 @@ async function getProfitablePath(startingBalance) {
         } else {
             const cycles = findCycles(startingNode, startingBalance)
 
-            const mapped = cycles.map(({ cycle, finalLiquidity }) => {
+            const mappedPath = cycles.map(({ cycle, finalLiquidity }) => {
                 return {
                     finalLiquidity,
                     cycleNodes: cycle.nodes.map(n => tokenLookup[n.address].symbol),
                     cycleEdges: cycle.edges.map(n => n.pairAddress),
                     tokenPath: cycle.nodes.map(n => tokenLookup[n.address].address)
                 }
-            }).sort((a, b) => a.finalLiquidity - b.finalLiquidity).filter(path => path.finalLiquidity >= startingBalance * 1.01) // 1%
+            }).sort((a, b) => a.finalLiquidity - b.finalLiquidity)
 
-            return mapped[mapped.length - 1]
+            const filteredPath = mappedPath.filter(path => path.finalLiquidity > (startingBalance * 1.004)) // 0.4%
+
+            return filteredPath[mappedPath.length - 1]
         }
 }
 

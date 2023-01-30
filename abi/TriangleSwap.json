@@ -52,9 +52,9 @@
 		"name": "swapTokens",
 		"outputs": [
 			{
-				"internalType": "uint256[]",
-				"name": "amounts",
-				"type": "uint256[]"
+				"internalType": "uint256",
+				"name": "outputAmount",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "payable",
