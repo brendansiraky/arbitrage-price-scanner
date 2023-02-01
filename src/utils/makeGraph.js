@@ -21,7 +21,7 @@ function calculateExchange(liquidity, fromNode) {
 	// USDC per ETH = 0.0006
 	const exchangeRate = (reserve1 / reserve0)
 
-	return (exchangeRate * liquidity) * (1 - 0.0025)
+	return (exchangeRate * liquidity) * (1 - 0.0025) // 0.25% is the LP fee that is taken from most Dex's
 }
 
 function createEdge (node0, node1, reserve0, reserve1, pairAddress) {

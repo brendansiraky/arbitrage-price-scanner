@@ -1,26 +1,23 @@
 const TOKENS = {
-    tokens: {
-        bsc: {
-            mainnet: {
-                WBNB: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-                CAKE: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-            },
-            testnet: {
-                WBNB: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
-                CAKE: '0xFa60D973F7642B748046464e165A65B7323b0DEE',
-                BUSD: '0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814',
-            }
+    bsc: {
+        mainnet: {
+            WBNB: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+            CAKE: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
         },
-        eth: {
-            goerli: {
-                WETH: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
-                UNI: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-                USDC: '0xA2025B15a1757311bfD68cb14eaeFCc237AF5b43',
-                DAI: '0xDF1742fE5b0bFc12331D8EAec6b478DfDbD31464',
-            }
+        testnet: {
+            WBNB: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+            CAKE: '0xFa60D973F7642B748046464e165A65B7323b0DEE',
+            BUSD: '0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814',
         }
     },
-
+    eth: {
+        goerli: {
+            WETH: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+            UNI: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+            USDC: '0xA2025B15a1757311bfD68cb14eaeFCc237AF5b43',
+            DAI: '0xDF1742fE5b0bFc12331D8EAec6b478DfDbD31464',
+        }
+    }
 }
 
 // Pancakeswap
