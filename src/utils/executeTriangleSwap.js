@@ -45,7 +45,7 @@ async function executeTriangleSwap(amountIn, pathAddresses, onSuccess) {
 		onSuccess(transactionReceipt)
 	
 	} catch (err) {
-		console.error(err)
+		console.error(err.message)
 	}
 }
 
