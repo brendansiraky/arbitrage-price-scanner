@@ -1,7 +1,7 @@
 const { Web3Client } = require('../src/utils/client')
 const TriangleSwapContractAbi = require('../abi/TriangleSwap.json')
 
-const TRIANGLESWAP_CONTRACT_ADDRESS = '0x008e367fEF9455f2981FC499D772d885d2d8013B'
+const TRIANGLESWAP_CONTRACT_ADDRESS = '0x7a3474a680ECD84a69149279E11cC3879914D46F'
 const TriangleSwapContract = new Web3Client.eth.Contract(
 	TriangleSwapContractAbi,
 	TRIANGLESWAP_CONTRACT_ADDRESS
