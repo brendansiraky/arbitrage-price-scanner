@@ -10,15 +10,7 @@ const startingBalance = 1 // WBNB
 
 setInterval(() => {
     try {
-        
-    } catch (err) {
-        console.error(`Something went wrong inside the setInterval - ${err}`)
-    }
-    // Every 30 Seconds
-}, 30000)
-
-
-getProfitablePath(startingBalance)
+        getProfitablePath(startingBalance)
         .then(path => {
             if (!path) {
                 console.log(`No profitable paths found`)
@@ -54,3 +46,8 @@ getProfitablePath(startingBalance)
                 )
             }
         })
+    } catch (err) {
+        console.error(`Something went wrong inside the setInterval - ${err}`)
+    }
+    // Every 30 Seconds
+}, 30000)
