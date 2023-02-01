@@ -3,7 +3,7 @@ const { TriangleSwapContract, TRIANGLESWAP_CONTRACT_ADDRESS } = require('../../c
 const { Web3Client } = require('./client')
 const { getAddress } = require('../utils/getAddress')
 
-async function executeTriangleSwap(amountIn, pathAddresses) {
+async function executeTriangleSwap(amountIn, pathAddresses, onSuccess) {
     try {
 		console.log('getting the address')
 		const address = getAddress()
@@ -42,7 +42,7 @@ async function executeTriangleSwap(amountIn, pathAddresses) {
 
 		console.log(`Sending Transaction`)
 		const transactionReceipt = await Web3Client.eth.sendSignedTransaction(signedTransaction.rawTransaction)
-		console.log(transactionReceipt)
+		onSuccess(transactionReceipt)
 	
 	} catch (err) {
 		console.error(err)
