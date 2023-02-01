@@ -5,6 +5,7 @@ const { getAddress } = require('../utils/getAddress')
 
 async function executeTriangleSwap(amountIn, pathAddresses) {
     try {
+		console.log('getting the address')
 		const address = getAddress()
 		// // Establishing the nonce and gas price
 		console.log('Getting the nonce')
