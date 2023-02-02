@@ -2,8 +2,8 @@ const { parseAddressCase } = require('../helpers/parseAddressCase')
 const { TokenReservesContract } = require('../../contracts/TokenReserves')
 const { readSavedPairs } = require('./pairs')
 
-async function getReserves() {
-	const tradingPairs = await readSavedPairs(5)
+async function getReserves(pages) {
+	const tradingPairs = await readSavedPairs(pages || 2)
     try {
         const reserves = await TokenReservesContract.methods.getPairAddresses(
 			tradingPairs,
