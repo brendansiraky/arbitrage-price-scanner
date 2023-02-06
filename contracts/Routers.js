@@ -1,13 +1,13 @@
-const { Web3Client } = require('../utils/client')
+const { Web3Client } = require('../src/utils/client')
 
-const BiswapRouterAbi = require('../../abi/BiswapRouter.json')
-const PancakeSwapRouterV2Abi = require('../../abi/PancakeSwapRouterV2.json')
-const UniswapRouterV2Abi = require('../../abi/UniswapRouter.json')
+const BiswapRouterAbi = require('../abi/BiswapRouter.json')
+const PancakeSwapRouterV2Abi = require('../abi/PancakeSwapRouterV2.json')
+const UniswapRouterV2Abi = require('../abi/UniswapRouter.json')
 const { 
     PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2, 
     BISWAP_ROUTER_CONTRACT_ADDRESS, 
     UNISWAP_ROUTER_CONTRACT_ADDRESS 
-} = require('../../constants/addresses')
+} = require('../constants/addresses')
 
 // Pancakeswap
 const PancakeSwapRouter = new Web3Client.eth.Contract(

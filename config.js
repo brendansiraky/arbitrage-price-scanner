@@ -5,6 +5,7 @@ dotenv.config()
 
 const {
     BASE_TICKER,
+    STARTING_BALANCE,
     NETWORK,
     BSC_RPC_URL,
     BSC_TESTNET_RPC_URL,
@@ -16,6 +17,7 @@ const {
 
 module.exports = {
     BASE_TICKER,
+    STARTING_BALANCE,
     RPC_URL: getRpcUrl(NETWORK),
     BASE_TOKEN_ADDRESS: NETWORK === 'BSC' 
         ? parseAddressCase('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c') // WBNB

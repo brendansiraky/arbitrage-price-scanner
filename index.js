@@ -1,23 +1,27 @@
 const fs = require('fs');
-const { BASE_TOKEN_ADDRESS } = require("./config")
+const { BASE_TOKEN_ADDRESS, STARTING_BALANCE } = require("./config")
 const { getProfitablePath } = require("./src/utils/getProfitablePath")
 const { executeTriangleSwap } = require("./src/utils/executeTriangleSwap")
 const { toWei } = require("./src/helpers/convert")
 const { getTokenLookup } = require("./src/utils/tokenLookup")
 
 const tokenLookup = getTokenLookup()
-const startingBalance = 1 // WBNB
 
 setInterval(() => {
+    execute()
+    // Every 20 Seconds
+}, 20000)
+
+async function execute() {
     try {
-        getProfitablePath(startingBalance)
+        getProfitablePath(STARTING_BALANCE)
         .then(path => {
             if (!path) {
                 console.log(`No profitable paths found`)
             } else {
                 console.log(`Found a profitable trade!`)
         
-                const gain = `${(((path.finalLiquidity - startingBalance) / startingBalance) * 100).toFixed(6)}%`
+                const gain = `${(((path.finalLiquidity - STARTING_BALANCE) / STARTING_BALANCE) * 100).toFixed(6)}%`
         
                 const onSuccess = (receipt) => {
                     console.log('Successfully Executed Trade! Logging trade details and receipt!')
@@ -49,5 +53,4 @@ setInterval(() => {
     } catch (err) {
         console.error(`Something went wrong inside the setInterval - ${err}`)
     }
-    // Every 20 Seconds
-}, 20000)
+} 

@@ -39,7 +39,7 @@ const tokenLookup = getTokenLookup()
 
 async function makeGraph() {
     // A graph is an array of nodes, each node having an ID, and an array of edges, each edge has 2 nodes.
-	const reserves = await getReserves()
+	const reserves = await getReserves(1)
 
     const createNode = (address) => ({
         address,
