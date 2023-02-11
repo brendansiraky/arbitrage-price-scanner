@@ -91,6 +91,8 @@ async function executeMultiExchangeScan() {
     if (profitableTrades.length > 0) {
         // We have profitable trades
         // Grab the most profitable one
+        console.log('Found a profitable trade!')
+
         const { gain, config } = profitableTrades[profitableTrades.length - 1]
 
         const onSuccess = (receipt) => {
@@ -112,6 +114,8 @@ async function executeMultiExchangeScan() {
             config.toRouterContractAddress, 
             onSuccess
         )
+    } else {
+        console.log('Did NOT find a profitable trade.')
     }
 
 }
