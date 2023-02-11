@@ -14,7 +14,6 @@ const {
     PRIVATE_KEY,
 } = process.env
 
-
 module.exports = {
     BASE_TICKER,
     STARTING_BALANCE,
