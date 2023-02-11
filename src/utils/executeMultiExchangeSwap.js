@@ -40,9 +40,7 @@ async function executeMultiExchangeSwap(amountIn, pathAddresses, startingRouterA
 			to: MULTIEXCHANGESWAP_CONTRACT_ADDRESS,
 			data: encodedFunction,
 		}
-        
 
-        return 
 		console.log(`Signing Transaction`)
 		const signedTransaction = await Web3Client.eth.accounts.signTransaction(transaction, PRIVATE_KEY)
 
