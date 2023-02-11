@@ -2,7 +2,7 @@ const { executeMultiExchangeScan } = require('./src/utils/executeMultiExchangeSc
 const { executeTriangleScan } = require('./src/utils/executeTriangleScan')
 
 setInterval(() => {
+    executeMultiExchangeScan()
     // Every 20 Seconds
 }, 20000)
 // executeTriangleScan()
-executeMultiExchangeScan()
