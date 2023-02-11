@@ -91,9 +91,9 @@ async function executeMultiExchangeScan() {
     if (profitableTrades.length > 0) {
         // We have profitable trades
         // Grab the most profitable one
-        console.log('Found a profitable trade!')
-
+        
         const { gain, config } = profitableTrades[profitableTrades.length - 1]
+        console.log(`Found a profitable trade with a gain of ${gain}`)
 
         const onSuccess = (receipt) => {
             console.log('Successfully Executed Trade! Logging trade details and receipt!')
