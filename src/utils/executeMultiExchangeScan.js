@@ -8,6 +8,8 @@ const { getIntersectingReserves } = require("./getIntersectionReserves")
 const { PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2, BISWAP_ROUTER_CONTRACT_ADDRESS } = require('../../constants/addresses')
 const { executeMultiExchangeSwap } = require('./executeMultiExchangeSwap')
 
+const tokenLookup = getTokenLookup()
+
 const exchangesConfig = {
     exchangeOne: {
         name: 'pancakeswap_new',
@@ -23,7 +25,6 @@ const exchangesConfig = {
 }
 
 function getExchangeRate(reserve) {
-    const tokenLookup = getTokenLookup()
 
     const token0Decimals = tokenLookup[reserve.token0].decimals
 	const token1Decimals = tokenLookup[reserve.token1].decimals
@@ -94,6 +95,10 @@ async function executeMultiExchangeScan() {
         
         const { gain, config } = profitableTrades[profitableTrades.length - 1]
         console.log(`Found a profitable trade with a gain of ${gain}`)
+        console.log({
+            fromToken: tokenLookup[config.fromToken],
+            toToken: tokenLookup[config.toToken]
+        })
 
         const onSuccess = (receipt) => {
             console.log('Successfully Executed Trade! Logging trade details and receipt!')
