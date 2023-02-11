@@ -43,7 +43,7 @@ function getExchangeRate(reserve) {
 function getProfitableMultiTrades(reserveOne, reserveTwo) {
     // purely an estimation, shouldshould try work this out properly.
     const transactionFee = 0.0017
-    const liquidityProviderFee = 0.0025
+    const liquidityProviderFee = 0.005
 
     const profitableTrades = reserveOne.reduce((acc, currentReserveOne, index) => {
         const currentReserveTwo = reserveTwo[index]
