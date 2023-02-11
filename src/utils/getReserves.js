@@ -1,13 +1,12 @@
 const { parseAddressCase } = require('../helpers/parseAddressCase')
-const { TokenReservesContract } = require('../../contracts/TokenReserves')
-const { readSavedPairs } = require('./pairs')
+const { PancakeswapTokenReservesContract } = require('../../contracts/TokenReserves')
 
-async function getReserves(pages) {
-	const tradingPairs = await readSavedPairs(pages || 2)
+async function getReserves(tradingPairs, tokenReservesContract = PancakeswapTokenReservesContract) {
     try {
-        const reserves = await TokenReservesContract.methods.getPairAddresses(
+        const reserves = await tokenReservesContract.methods.getPairAddresses(
 			tradingPairs,
 		).call()
+
 		return reserves.map(r => ({
 			...r,
 			token0: parseAddressCase(r.token0),

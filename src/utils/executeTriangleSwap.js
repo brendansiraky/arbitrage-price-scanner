@@ -32,7 +32,6 @@ async function executeTriangleSwap(amountIn, pathAddresses, onSuccess) {
 		const transaction = {
 			nonce,
 			gas: estimatedGas.toString(),
-			// gas: '739190',
 			to: TRIANGLESWAP_CONTRACT_ADDRESS,
 			data: encodedFunction,
 		}

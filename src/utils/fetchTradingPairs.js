@@ -5,11 +5,11 @@ const { getTokenLookup } = require('./tokenLookup')
 
 const tokenLookup = getTokenLookup()
 
-async function getTradingPairs(pages = 1) {
+async function fetchTradingPairs(pages = 1, exchangeName = 'pancakeswap_new') {
     let pairs = []
 
     for (let i = 0; i < pages; i++) {
-        const response = await fetch(`https://api.coingecko.com/api/v3/exchanges/pancakeswap_new/tickers?page=${i + 1}`)
+        const response = await fetch(`https://api.coingecko.com/api/v3/exchanges/${exchangeName}/tickers?page=${i + 1}`)
         const result = await response.json()
         pairs.push(...result.tickers)
 	}
@@ -29,4 +29,4 @@ async function getTradingPairs(pages = 1) {
 	return uniqBy(filteredMapped, (x) => `${x[0]}${x[1]}`)
 }
 
-module.exports = { getTradingPairs }
+module.exports = { fetchTradingPairs }

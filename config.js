@@ -1,4 +1,5 @@
 const dotenv =  require('dotenv')
+const { TOKENS } = require('./constants/addresses')
 const { parseAddressCase } = require('./src/helpers/parseAddressCase')
 
 dotenv.config()
@@ -19,7 +20,7 @@ module.exports = {
     STARTING_BALANCE,
     RPC_URL: getRpcUrl(NETWORK),
     BASE_TOKEN_ADDRESS: NETWORK === 'BSC' 
-        ? parseAddressCase('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c') // WBNB
+        ? parseAddressCase(TOKENS.bsc.mainnet.WBNB) // WBNB
         : parseAddressCase('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'), // WETH
     NETWORK,
     PRIVATE_KEY,

@@ -1,5 +1,6 @@
 const { fromWei } = require('../helpers/convert')
 const { getReserves } = require('../utils/getReserves')
+const { getTradingPairs } = require('./pairs')
 const { getTokenLookup } = require('./tokenLookup')
 
 function calculateExchange(liquidity, fromNode) {
@@ -24,7 +25,7 @@ function calculateExchange(liquidity, fromNode) {
 	return (exchangeRate * liquidity) * (1 - 0.0025) // 0.25% is the LP fee that is taken from most Dex's
 }
 
-function createEdge (node0, node1, reserve0, reserve1, pairAddress) {
+function createEdge(node0, node1, reserve0, reserve1, pairAddress) {
 	return {
 		node0,
 		node1,
@@ -37,9 +38,14 @@ function createEdge (node0, node1, reserve0, reserve1, pairAddress) {
 
 const tokenLookup = getTokenLookup()
 
+const PAGES = 2
+const EXCHANGE = 'pancakeswap_new'
+
 async function makeGraph() {
     // A graph is an array of nodes, each node having an ID, and an array of edges, each edge has 2 nodes.
-	const reserves = await getReserves(1)
+	
+	const tradingPairs = await getTradingPairs(PAGES, EXCHANGE)
+	const reserves = await getReserves(tradingPairs)
 
     const createNode = (address) => ({
         address,
