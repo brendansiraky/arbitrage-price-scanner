@@ -6,6 +6,21 @@ const { fromWei } = require("../helpers/convert")
 const { BASE_TOKEN_ADDRESS } = require("../../config")
 const { getIntersectingReserves } = require("./getIntersectionReserves")
 const { PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2, BISWAP_ROUTER_CONTRACT_ADDRESS } = require('../../constants/addresses')
+const { executeMultiExchangeSwap } = require('./executeMultiExchangeSwap')
+
+const exchangesConfig = {
+    exchangeOne: {
+        name: 'pancakeswap_new',
+        reserveContract: PancakeswapTokenReservesContract,
+        routerContractAddress: PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2,
+    },
+    exchangeTwo: {
+        name: 'biswap',
+        reserveContract: BiswapTokenReservesContract,
+        routerContractAddress: BISWAP_ROUTER_CONTRACT_ADDRESS,
+    },
+    pages: 2
+}
 
 function getExchangeRate(reserve) {
     const tokenLookup = getTokenLookup()
@@ -27,8 +42,8 @@ function getExchangeRate(reserve) {
 
 function getProfitableMultiTrades(reserveOne, reserveTwo) {
     // purely an estimation, shouldshould try work this out properly.
-    const transactionFee = 0
-    const liquidityProviderFee = 0
+    const transactionFee = 0.0017
+    const liquidityProviderFee = 0.0025
 
     const profitableTrades = reserveOne.reduce((acc, currentReserveOne, index) => {
         const currentReserveTwo = reserveTwo[index]
@@ -67,7 +82,7 @@ function getProfitableMultiTrades(reserveOne, reserveTwo) {
     return profitableTrades.sort((a, b) => a.gain - b.gain)
 }
 
-async function executeMultiExchangeScan(exchangesConfig) {
+async function executeMultiExchangeScan() {
 
     const { reserveOne, reserveTwo } = await getIntersectingReserves(exchangesConfig)
 
@@ -76,25 +91,29 @@ async function executeMultiExchangeScan(exchangesConfig) {
     if (profitableTrades.length > 0) {
         // We have profitable trades
         // Grab the most profitable one
-        const mostProfitableTrade = profitableTrades[profitableTrades.length - 1]
+        const { gain, config } = profitableTrades[profitableTrades.length - 1]
 
-        console.log(mostProfitableTrade)
+        const onSuccess = (receipt) => {
+            console.log('Successfully Executed Trade! Logging trade details and receipt!')
+            const jsonToWrite = {
+                config,
+                gain,
+                receipt,
+                type: 'MultiExchange'
+            }
+
+            fs.writeFileSync(`${__dirname}/../../logs/${Date()}.json`, JSON.stringify(jsonToWrite, null, 2))
+        }
+
+        executeMultiExchangeSwap(
+            1,
+            [config.fromToken, config.toToken],
+            config.fromRouterContractAddress, 
+            config.toRouterContractAddress, 
+            onSuccess
+        )
     }
 
 }
 
-const exchangeConfig = {
-    exchangeOne: {
-        name: 'pancakeswap_new',
-        reserveContract: PancakeswapTokenReservesContract,
-        routerContractAddress: PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2,
-    },
-    exchangeTwo: {
-        name: 'biswap',
-        reserveContract: BiswapTokenReservesContract,
-        routerContractAddress: BISWAP_ROUTER_CONTRACT_ADDRESS,
-    },
-    pages: 2
-}
-
-executeMultiExchangeScan(exchangeConfig)
+module.exports = { executeMultiExchangeScan }

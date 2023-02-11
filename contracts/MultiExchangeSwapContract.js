@@ -1,7 +1,7 @@
 const { Web3Client } = require('../src/utils/client')
 const MultiExchangeSwap = require('../abi/MultiExchangeSwap.json')
 
-const MULTIEXCHANGESWAP_CONTRACT_ADDRESS = '0x55ec6FD94131d0Cc7B1c99AeE95921c7B7944147'
+const MULTIEXCHANGESWAP_CONTRACT_ADDRESS = '0xD92FA73234E6A1C4eCb9c5E1237345a735A68B14'
 const MultiExchangeSwapContract = new Web3Client.eth.Contract(
 	MultiExchangeSwap,
 	MULTIEXCHANGESWAP_CONTRACT_ADDRESS
