@@ -97,7 +97,8 @@ async function executeMultiExchangeScan() {
         console.log(`Found a profitable trade with a gain of ${gain}`)
         console.log({
             fromToken: tokenLookup[config.fromToken],
-            toToken: tokenLookup[config.toToken]
+            toToken: tokenLookup[config.toToken],
+            config
         })
 
         const onSuccess = (receipt) => {
