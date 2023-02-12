@@ -3,7 +3,7 @@ const { MultiExchangeSwapContract, MULTIEXCHANGESWAP_CONTRACT_ADDRESS } = requir
 const { Web3Client } = require('./client')
 const { getAddress } = require('../utils/getAddress')
 
-async function executeMultiExchangeSwap(amountIn, pathAddresses, startingRouterAddress, endingRouterAddress, onSuccess) {
+async function executeMultiExchangeSwap(amountIn, tokenOne, tokenTwo, routerAddressOne, routerAddressTwo, onSuccess) {
 	console.log('executeMultiExchangeSwap was called')
     try {
 		console.log('getting the address')
@@ -16,18 +16,20 @@ async function executeMultiExchangeSwap(amountIn, pathAddresses, startingRouterA
 		console.log('Getting the encoded method')
 		const encodedFunction = await MultiExchangeSwapContract.methods.swapTokens(
 			amountIn,
-			pathAddresses,
-            startingRouterAddress,
-            endingRouterAddress
+			tokenOne,
+			tokenTwo,
+            routerAddressOne,
+            routerAddressTwo,
 		).encodeABI()
 
 		// Get the estimated gas price
 		console.log('Estimating the gas')
 		const estimatedGas = await MultiExchangeSwapContract.methods.swapTokens(
 			amountIn,
-			pathAddresses,
-            startingRouterAddress,
-            endingRouterAddress
+			tokenOne,
+			tokenTwo,
+            routerAddressOne,
+            routerAddressTwo,
 		).estimateGas({
 			from: address
 		})

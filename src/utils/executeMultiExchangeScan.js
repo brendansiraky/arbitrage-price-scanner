@@ -2,8 +2,8 @@ const fs = require('fs')
 const _ = require('lodash')
 const { PancakeswapTokenReservesContract, BiswapTokenReservesContract } = require("../../contracts/TokenReserves")
 const { getTokenLookup } = require("./tokenLookup")
-const { fromWei } = require("../helpers/convert")
-const { BASE_TOKEN_ADDRESS } = require("../../config")
+const { fromWei, toWei } = require("../helpers/convert")
+const { BASE_TOKEN_ADDRESS, STARTING_BALANCE } = require("../../config")
 const { getIntersectingReserves } = require("./getIntersectionReserves")
 const { PANCAKESWAP_ROUTER_CONTRACT_ADDRESS_V2, BISWAP_ROUTER_CONTRACT_ADDRESS } = require('../../constants/addresses')
 const { executeMultiExchangeSwap } = require('./executeMultiExchangeSwap')
@@ -92,7 +92,6 @@ async function executeMultiExchangeScan() {
     if (profitableTrades.length > 0) {
         // We have profitable trades
         // Grab the most profitable one
-        
         const { gain, config } = profitableTrades[profitableTrades.length - 1]
         console.log(`Found a profitable trade with a gain of ${gain}`)
         console.log({
@@ -113,12 +112,15 @@ async function executeMultiExchangeScan() {
             fs.writeFileSync(`${__dirname}/../../logs/${Date()}.json`, JSON.stringify(jsonToWrite, null, 2))
         }
 
+        const startingAmount = toWei(STARTING_BALANCE, tokenLookup[BASE_TOKEN_ADDRESS].decimals)
+
         executeMultiExchangeSwap(
-            1,
-            [config.fromToken, config.toToken],
+            startingAmount,
+            config.fromToken,
+            config.toToken,
             config.fromRouterContractAddress, 
-            config.toRouterContractAddress, 
-            onSuccess
+            config.toRouterContractAddress,
+            onSuccess,
         )
     } else {
         console.log('Did NOT find a profitable trade.')

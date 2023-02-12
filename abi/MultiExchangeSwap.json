@@ -33,29 +33,28 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "address[]",
-				"name": "path",
-				"type": "address[]"
-			},
-			{
 				"internalType": "address",
-				"name": "startingRouterAddress",
+				"name": "tokenOne",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "endingRouterAddress",
+				"name": "tokenTwo",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "routerOneAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "routerTwoAddress",
 				"type": "address"
 			}
 		],
 		"name": "swapTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "outputAmount",
-				"type": "uint256"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
