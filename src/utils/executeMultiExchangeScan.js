@@ -76,7 +76,7 @@ function getProfitableMultiTrades(reserveOne, reserveTwo) {
                 }
             })
         }
-        
+
         return acc
     }, [])
 
@@ -93,11 +93,11 @@ async function executeMultiExchangeScan() {
         // We have profitable trades
         // Grab the most profitable one
         const { gain, config } = profitableTrades[profitableTrades.length - 1]
-        console.log(`Found a profitable trade with a gain of ${gain}`)
+        console.log(`Found a profitable trade:`)
         console.log({
-            fromToken: tokenLookup[config.fromToken],
-            toToken: tokenLookup[config.toToken],
-            config
+            potentialGain: gain,
+            fromToken: tokenLookup[config.fromToken].name,
+            toToken: tokenLookup[config.toToken].name,
         })
 
         const onSuccess = (receipt) => {
