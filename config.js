@@ -3,10 +3,21 @@ const { TOKENS } = require('./constants/addresses')
 const { parseAddressCase } = require('./src/helpers/parseAddressCase')
 
 dotenv.config()
+let BASE_TICKER_FROM_ARGV = null;
+let STARTING_BALANCE_FROM_ARGV = null;
+
+process.argv.forEach(argument => {
+    if (argument.includes('BASE_TICKER')) {
+        BASE_TICKER_FROM_ARGV = argument.split("=")[1]
+    }
+    if (argument.includes('STARTING_BALANCE')) {
+        STARTING_BALANCE_FROM_ARGV = argument.split("=")[1]
+    }
+})
 
 const {
-    BASE_TICKER,
-    STARTING_BALANCE,
+    BASE_TICKER: BASE_TICKER_FROM_ENV,
+    STARTING_BALANCE: STARTING_BALANCE_FROM_ENV,
     NETWORK,
     BSC_RPC_URL,
     BSC_TESTNET_RPC_URL,
@@ -15,15 +26,46 @@ const {
     PRIVATE_KEY,
 } = process.env
 
+const BASE_TICKER = BASE_TICKER_FROM_ARGV || BASE_TICKER_FROM_ENV
+
 module.exports = {
     BASE_TICKER,
-    STARTING_BALANCE,
+    STARTING_BALANCE: STARTING_BALANCE_FROM_ARGV || STARTING_BALANCE_FROM_ENV,
     RPC_URL: getRpcUrl(NETWORK),
-    BASE_TOKEN_ADDRESS: NETWORK === 'BSC' 
-        ? parseAddressCase(TOKENS.bsc.mainnet.WBNB) // WBNB
-        : parseAddressCase('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'), // WETH
+    BASE_TOKEN_ADDRESS: getBaseTokenAddress(BASE_TICKER, NETWORK),
     NETWORK,
     PRIVATE_KEY,
+}
+
+console.log({
+    BASE_TICKER,
+    STARTING_BALANCE: STARTING_BALANCE_FROM_ARGV || STARTING_BALANCE_FROM_ENV,
+    RPC_URL: getRpcUrl(NETWORK),
+    BASE_TOKEN_ADDRESS: getBaseTokenAddress(BASE_TICKER, NETWORK),
+    NETWORK,
+    PRIVATE_KEY,
+})
+
+function getBaseTokenAddress(baseTicker, network) {
+    if (network === 'BSC') {
+        switch (baseTicker) {
+            case 'BUSD':
+                return parseAddressCase(TOKENS.bsc.mainnet.BUSD);
+            case 'CAKE':
+                return parseAddressCase(TOKENS.bsc.mainnet.CAKE);
+            default:
+                return parseAddressCase(TOKENS.bsc.mainnet.WBNB);
+        }
+    } else if (network == 'BSC_TESTNET') {
+        switch (baseTicker) {
+            case 'BUSD':
+                return parseAddressCase(TOKENS.bsc.testnet.BUSD);
+            case 'CAKE':
+                return parseAddressCase(TOKENS.bsc.testnet.CAKE);
+            default:
+                return parseAddressCase(TOKENS.bsc.testnet.WBNB);
+        }
+    }
 }
 
 function getRpcUrl(network) {
