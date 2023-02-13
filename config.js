@@ -43,7 +43,6 @@ console.log({
     RPC_URL: getRpcUrl(NETWORK),
     BASE_TOKEN_ADDRESS: getBaseTokenAddress(BASE_TICKER, NETWORK),
     NETWORK,
-    PRIVATE_KEY,
 })
 
 function getBaseTokenAddress(baseTicker, network) {
