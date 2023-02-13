@@ -43,8 +43,8 @@ function getExchangeRate(reserve) {
 
 function getProfitableMultiTrades(reserveOne, reserveTwo) {
     // purely an estimation, shouldshould try work this out properly.
-    const transactionFee = 0.0017
-    const liquidityProviderFee = 0.005
+    const transactionFee = 0
+    const liquidityProviderFee = 0
 
     const profitableTrades = reserveOne.reduce((acc, currentReserveOne, index) => {
         const currentReserveTwo = reserveTwo[index]
@@ -90,6 +90,8 @@ async function executeMultiExchangeScan() {
     const profitableTrades = getProfitableMultiTrades(reserveOne, reserveTwo)
 
     if (profitableTrades.length > 0) {
+        
+        console.log(`Found ${profitableTrades.length} profitable trades!`)
 
         const onSuccess = (receipt, info) => {
             console.log('Successfully Executed Trade! Logging trade details and receipt!')
