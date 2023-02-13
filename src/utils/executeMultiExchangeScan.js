@@ -21,7 +21,7 @@ const exchangesConfig = {
         reserveContract: BiswapTokenReservesContract,
         routerContractAddress: BISWAP_ROUTER_CONTRACT_ADDRESS,
     },
-    pages: 3
+    pages: 5
 }
 
 function getExchangeRate(reserve) {

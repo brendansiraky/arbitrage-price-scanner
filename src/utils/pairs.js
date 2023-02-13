@@ -30,4 +30,12 @@ async function getTradingPairs(pages, exchange = 'pancakeswap_new') {
     }
 }
 
+
+function generateTradingPairs() {
+    const exchange = 'biswap'
+    const path = `${__dirname}/../../pairs/${exchange}/tokenPairs.json`
+    savePairsToJson(5, path, exchange)
+}
+// generateTradingPairs()
+
 module.exports = { getTradingPairs }
