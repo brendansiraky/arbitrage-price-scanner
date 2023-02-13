@@ -41,9 +41,10 @@ function getExchangeRate(reserve) {
     return exchangeRate
 }
 
+// TODO - pass in the transaction fee as WEI rather than hard code a percentage.
 function getProfitableMultiTrades(reserveOne, reserveTwo) {
     // purely an estimation, shouldshould try work this out properly.
-    const transactionFee = 0
+    const transactionFee = 0.35
     const liquidityProviderFee = 0.005
 
     const profitableTrades = reserveOne.reduce((acc, currentReserveOne, index) => {
@@ -96,9 +97,11 @@ async function executeMultiExchangeScan() {
         const onSuccess = (receipt, info) => {
             console.log('Successfully Executed Trade! Logging trade details and receipt!')
             const jsonToWrite = {
-                info,
+                info: {
+                    ...info,
+                    type: 'MultiExchange'
+                },
                 receipt,
-                type: 'MultiExchange'
             }
 
             fs.writeFileSync(`${__dirname}/../../logs/${Date()}.json`, JSON.stringify(jsonToWrite, null, 2))
@@ -123,7 +126,11 @@ async function executeMultiExchangeScan() {
                 config.toToken,
                 config.fromRouterContractAddress, 
                 config.toRouterContractAddress,
-                (receipt) => onSuccess(receipt, { config, gain }),
+                (receipt) => onSuccess(receipt, {
+                    potentialGain: gain,
+                    fromToken: tokenLookup[config.fromToken].name,
+                    toToken: tokenLookup[config.toToken].name,
+                }),
             )
         }
 
