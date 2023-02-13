@@ -21,7 +21,7 @@ const exchangesConfig = {
         reserveContract: BiswapTokenReservesContract,
         routerContractAddress: BISWAP_ROUTER_CONTRACT_ADDRESS,
     },
-    pages: 2
+    pages: 3
 }
 
 function getExchangeRate(reserve) {
@@ -90,21 +90,11 @@ async function executeMultiExchangeScan() {
     const profitableTrades = getProfitableMultiTrades(reserveOne, reserveTwo)
 
     if (profitableTrades.length > 0) {
-        // We have profitable trades
-        // Grab the most profitable one
-        const { gain, config } = profitableTrades[profitableTrades.length - 1]
-        console.log(`Found a profitable trade:`)
-        console.log({
-            potentialGain: gain,
-            fromToken: tokenLookup[config.fromToken].name,
-            toToken: tokenLookup[config.toToken].name,
-        })
 
-        const onSuccess = (receipt) => {
+        const onSuccess = (receipt, info) => {
             console.log('Successfully Executed Trade! Logging trade details and receipt!')
             const jsonToWrite = {
-                config,
-                gain,
+                info,
                 receipt,
                 type: 'MultiExchange'
             }
@@ -112,16 +102,29 @@ async function executeMultiExchangeScan() {
             fs.writeFileSync(`${__dirname}/../../logs/${Date()}.json`, JSON.stringify(jsonToWrite, null, 2))
         }
 
-        const startingAmount = toWei(STARTING_BALANCE, tokenLookup[BASE_TOKEN_ADDRESS].decimals)
+        for (let i = 0; i < profitableTrades.length; i++) {
 
-        executeMultiExchangeSwap(
-            startingAmount,
-            config.fromToken,
-            config.toToken,
-            config.fromRouterContractAddress, 
-            config.toRouterContractAddress,
-            onSuccess,
-        )
+            const { gain, config } = profitableTrades[i]
+
+            console.log(`Found a profitable trade:`)
+            console.log({
+                potentialGain: gain,
+                fromToken: tokenLookup[config.fromToken].name,
+                toToken: tokenLookup[config.toToken].name,
+            })
+
+            const startingAmount = toWei(STARTING_BALANCE, tokenLookup[BASE_TOKEN_ADDRESS].decimals)
+
+            await executeMultiExchangeSwap(
+                startingAmount,
+                config.fromToken,
+                config.toToken,
+                config.fromRouterContractAddress, 
+                config.toRouterContractAddress,
+                (receipt) => onSuccess(receipt, { config, gain }),
+            )
+        }
+
     } else {
         console.log('Did NOT find a profitable trade.')
     }
