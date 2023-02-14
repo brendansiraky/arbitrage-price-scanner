@@ -44,8 +44,8 @@ function getExchangeRate(reserve) {
 // TODO - pass in the transaction fee as WEI rather than hard code a percentage.
 function getProfitableMultiTrades(reserveOne, reserveTwo) {
     // purely an estimation, shouldshould try work this out properly.
-    const transactionFee = 0.0035
-    const liquidityProviderFee = 0.005
+    const transactionFee = 0.0035 // 0.35%
+    const liquidityProviderFee = 0.005 // 0.50%
 
     const profitableTrades = reserveOne.reduce((acc, currentReserveOne, index) => {
         const currentReserveTwo = reserveTwo[index]
@@ -91,7 +91,7 @@ async function executeMultiExchangeScan() {
     const profitableTrades = getProfitableMultiTrades(reserveOne, reserveTwo)
 
     if (profitableTrades.length > 0) {
-        
+
         console.log(`Found ${profitableTrades.length} profitable trades!`)
 
         const onSuccess = (receipt, info) => {
