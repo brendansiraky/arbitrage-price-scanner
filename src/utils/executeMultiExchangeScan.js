@@ -44,8 +44,9 @@ function getExchangeRate(reserve) {
 // TODO - pass in the transaction fee as WEI rather than hard code a percentage.
 function getProfitableMultiTrades(reserveOne, reserveTwo) {
     // purely an estimation, shouldshould try work this out properly.
-    const transactionFee = 0.0035 // 0.35%
+    const transactionFee = 0.005 // 0.50%
     const liquidityProviderFee = 0.005 // 0.50%
+    const priceImpact = 0.005 // 0.50%
 
     const profitableTrades = reserveOne.reduce((acc, currentReserveOne, index) => {
         const currentReserveTwo = reserveTwo[index]
@@ -55,7 +56,7 @@ function getProfitableMultiTrades(reserveOne, reserveTwo) {
 
         const cheapExchangeRate = Math.min(firstExchangeRate, secondExchangeRate)
         const expensiveExchangeRate = Math.max(firstExchangeRate, secondExchangeRate)
-        const cheaperExchangeRateWithFee = cheapExchangeRate * (1 + liquidityProviderFee + transactionFee)
+        const cheaperExchangeRateWithFee = cheapExchangeRate * (1 + liquidityProviderFee + transactionFee + priceImpact)
 
         if (cheaperExchangeRateWithFee < expensiveExchangeRate) {
 
